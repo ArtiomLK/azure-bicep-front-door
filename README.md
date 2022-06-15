@@ -31,4 +31,13 @@ az deployment group create \
 --template-file examples/examples.bicep
 ```
 
+## Additional Resources
+
+- Azure Front Door (FD)
+- [Youtube | John Savill's | Microsoft Azure Front Door Deep Dive][2]
+- Azure Web Application Firewall (WAF)
+- [MS | Docs | Azure Web Application Firewall on Azure Front Door][3]
+
 [1]: ./examples/examples.bicep
+[2]: https://www.youtube.com/watch?v=DHiZbIks9i0&ab_channel=JohnSavill%27sTechnicalTraining
+[3]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/afds-overview
