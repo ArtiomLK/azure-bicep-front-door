@@ -88,6 +88,8 @@ resource appB 'Microsoft.Web/sites@2018-11-01' = {
 module fdAPremium '../main.bicep' = {
   name: 'fd-a-premium'
   params: {
+    fd_n: 'fd-a-premium'
+    prefix: 'bicephubapp'
     skuName: 'Premium_AzureFrontDoor'
     endpointName: take('fd-a-premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
     originHostName: appA.properties.defaultHostName

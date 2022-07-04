@@ -7,6 +7,12 @@ param tags object = {}
 // ------------------------------------------------------------------------------------------------
 // FD Configuration parameters
 // ------------------------------------------------------------------------------------------------
+@description('The Azure Front Door Name')
+param fd_n string
+
+@description('The Azure Front Door Prefix used with inner configurations such as: origin group, route, etc.')
+param prefix string
+
 @description('The name of the Front Door endpoint to create. This must be globally unique.')
 param endpointName string
 
@@ -52,13 +58,12 @@ var privateLinkOriginDetails = {
 }
 
 // TODO rename vars
-var profileName = 'MyFrontDoor'
-var originGroupName = 'MyOriginGroup'
+var routeName = '${prefix}-web-prod-route'
+var originGroupName = '${prefix}-web-prod-origin-group'
 var originName = 'MyOrigin'
-var routeName = 'MyRoute'
 
 resource profile 'Microsoft.Cdn/profiles@2021-06-01' = {
-  name: profileName
+  name: fd_n
   location: 'global'
   tags: tags
   sku: {
