@@ -11,10 +11,6 @@ param tags object = {}
 @maxLength(64)
 param fd_n string
 
-@description('Front Door tier')
-@maxLength(64)
-param fd_tier string
-
 @description('Front Door BackendPool names')
 param fd_backend_pool_n string
 
