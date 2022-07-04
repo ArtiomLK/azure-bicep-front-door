@@ -35,9 +35,16 @@ az deployment group create \
 
 - Azure Front Door (FD)
 - [Youtube | John Savill's | Microsoft Azure Front Door Deep Dive][2]
+- Azure Front Door w Private Link
+- [MS | Docs | Secure your Origin with Private Link in Azure Front Door Premium][4]
+- [MS | Docs | Azure Private Link frequently asked questions (FAQ)][5]
+- [MS | Docs | What is Azure Private Link service?][6]
 - Azure Web Application Firewall (WAF)
 - [MS | Docs | Azure Web Application Firewall on Azure Front Door][3]
 
 [1]: ./examples/examples.bicep
 [2]: https://www.youtube.com/watch?v=DHiZbIks9i0&ab_channel=JohnSavill%27sTechnicalTraining
 [3]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/afds-overview
+[4]: https://docs.microsoft.com/en-us/azure/frontdoor/private-link
+[5]: https://docs.microsoft.com/en-us/azure/private-link/private-link-faq
+[6]: https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview
