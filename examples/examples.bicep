@@ -74,12 +74,25 @@ resource appB 'Microsoft.Web/sites@2018-11-01' = {
 // Front Door Deployment Examples
 // ------------------------------------------------------------------------------------------------
 
-module fda '../main.bicep' = {
-  name: 'fda'
+// module fda '../main.bicep' = {
+//   name: 'fda'
+//   params: {
+//     tags: tags
+//     fd_n: 'fda-${guid(subscription().id, resourceGroup().id, tags.env)}'
+//     fd_backend_pool_n: 'backend-pool-app'
+//     fd_backend_pool_backend_addr: '${appA.name}.azurewebsites.net,${appB.name}.azurewebsites.net'
+//   }
+// }
+
+
+module fdAPremium '../main.bicep' = {
+  name: 'fd-a-premium'
   params: {
-    tags: tags
-    fd_n: 'fda-${guid(subscription().id, resourceGroup().id, tags.env)}'
-    fd_backend_pool_n: 'backend-pool-app'
-    fd_backend_pool_backend_addr: '${appA.name}.azurewebsites.net,${appB.name}.azurewebsites.net'
+    skuName: 'Premium_AzureFrontDoor'
+    endpointName: 'fd-a-premium-${uniqueString(resourceGroup().id)}'
+    originHostName: appA.properties.defaultHostName
+    privateEndpointResourceId: appA.id
+    privateLinkResourceType: 'sites' // For App Service and Azure Functions, this needs to be 'sites'.
+    privateEndpointLocation: location
   }
 }
