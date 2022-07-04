@@ -35,7 +35,7 @@ az deployment group create \
 
 - Azure Front Door (FD)
 - [Youtube | John Savill's | Microsoft Azure Front Door Deep Dive][2]
-- Azure Front Door w Private Link
+- Azure Front Door with Private Link
 - [MS | Docs | Secure your Origin with Private Link in Azure Front Door Premium][4]
 - [MS | Docs | Azure Private Link frequently asked questions (FAQ)][5]
 - [MS | Docs | What is Azure Private Link service?][6]
