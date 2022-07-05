@@ -10,8 +10,9 @@ param tags object = {}
 @description('The Azure Front Door Name')
 param fd_n string
 
-@description('The Azure Front Door Prefix used with inner configurations such as: origin group, route, etc.')
-param prefix string
+param routeName string
+
+param originGroupName string
 
 @description('The name of the Front Door endpoint to create. This must be globally unique.')
 param endpointName string
@@ -37,6 +38,13 @@ param originPath string = ''
 ])
 param originForwardingProtocol string = 'HttpsOnly'
 
+@description('The protocol that should be used when checking origin health from Front Door to origins')
+@allowed([
+  'Http'
+  'Https'
+])
+param originGroupHealthProbeSettings string
+
 @description('If you are using Private Link to connect to the origin, this should specify the resource ID of the Private Link resource (e.g. an App Service application, Azure Storage account, etc). If you are not using Private Link then this should be empty.')
 param privateEndpointResourceIds array
 
@@ -57,11 +65,6 @@ var privateLinkOriginDetails = [for i in range(0, length(privateEndpointResource
   privateLinkLocation: privateEndpointLocations[i]
   requestMessage: 'Please approve this connection.'
 }]
-
-// TODO rename vars
-param routeName string = '${prefix}-web-prod-route'
-param originGroupName string = '${prefix}-web-prod-origin-group'
-// param originName string = 'MyOrigin'
 
 resource profile 'Microsoft.Cdn/profiles@2021-06-01' = {
   name: fd_n
@@ -93,7 +96,7 @@ resource originGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {
     healthProbeSettings: {
       probePath: '/'
       probeRequestType: 'HEAD'
-      probeProtocol: 'Http'
+      probeProtocol: originGroupHealthProbeSettings
       probeIntervalInSeconds: 100
     }
   }
