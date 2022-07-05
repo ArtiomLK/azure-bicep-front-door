@@ -100,7 +100,7 @@ resource originGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {
 }
 
 resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ for i in range(0, length(originHostNames)) : {
-  name: originHostNames[i]
+  name: replace(originHostNames[i], '.azurewebsites.net', '')
   parent: originGroup
   properties: {
     hostName: originHostNames[i]
