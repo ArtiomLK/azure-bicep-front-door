@@ -92,7 +92,7 @@ module fdAPremium '../main.bicep' = {
     prefix: 'myapp'
     skuName: 'Premium_AzureFrontDoor'
     endpointName: take('fd-a-premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
-    originHostNames: [appA.properties.defaultHostName]
+    originHostNames: [appA.properties.defaultHostName, appB.properties.defaultHostName]
     privateEndpointResourceIds: [appA.id, appB.id]
     privateLinkResourceType: ['sites', 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
     privateEndpointLocations: [location, location_bcdr]
