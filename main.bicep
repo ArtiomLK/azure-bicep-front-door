@@ -24,7 +24,7 @@ param endpointName string
 param skuName string
 
 @description('The host name that should be used when connecting to the origin.')
-param originHostName string
+param originHostNames array
 
 @description('The path that should be used when connecting to the origin.')
 param originPath string = ''
@@ -38,29 +38,30 @@ param originPath string = ''
 param originForwardingProtocol string = 'HttpsOnly'
 
 @description('If you are using Private Link to connect to the origin, this should specify the resource ID of the Private Link resource (e.g. an App Service application, Azure Storage account, etc). If you are not using Private Link then this should be empty.')
-param privateEndpointResourceId string = ''
+param privateEndpointResourceIds array
 
 @description('If you are using Private Link to connect to the origin, this should specify the resource type of the Private Link resource. The allowed value will depend on the specific Private Link resource type you are using. If you are not using Private Link then this should be empty.')
-param privateLinkResourceType string = ''
+param privateLinkResourceType array
 
 @description('If you are using Private Link to connect to the origin, this should specify the location of the Private Link resource. If you are not using Private Link then this should be empty.')
-param privateEndpointLocation string = ''
+param privateEndpointLocations array
 
 // When connecting to Private Link origins, we need to assemble the privateLinkOriginDetails object with various pieces of data.
-var isPrivateLinkOrigin = (privateEndpointResourceId != '')
-var privateLinkOriginDetails = {
+var isPrivateLinkOrigins = [for privateEndpointResourceId in privateEndpointResourceIds : (privateEndpointResourceId != '') ]
+
+var privateLinkOriginDetails = [for i in range(0, length(privateEndpointResourceIds)) : {
   privateLink: {
-    id: privateEndpointResourceId
+    id: privateEndpointResourceIds[i]
   }
   groupId: (privateLinkResourceType != '') ? privateLinkResourceType : null
-  privateLinkLocation: privateEndpointLocation
+  privateLinkLocation: privateEndpointLocations[i]
   requestMessage: 'Please approve this connection.'
-}
+}]
 
 // TODO rename vars
-var routeName = '${prefix}-web-prod-route'
-var originGroupName = '${prefix}-web-prod-origin-group'
-var originName = 'MyOrigin'
+param routeName string = '${prefix}-web-prod-route'
+param originGroupName string = '${prefix}-web-prod-origin-group'
+// param originName string = 'MyOrigin'
 
 resource profile 'Microsoft.Cdn/profiles@2021-06-01' = {
   name: fd_n
@@ -98,25 +99,25 @@ resource originGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {
   }
 }
 
-resource origin 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = {
-  name: originName
+resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ for i in range(0, length(originHostNames)) : {
+  name: originHostNames[i]
   parent: originGroup
   properties: {
-    hostName: originHostName
+    hostName: originHostNames[i]
     httpPort: 80
     httpsPort: 443
-    originHostHeader: originHostName
+    originHostHeader: originHostNames[i]
     priority: 1
     weight: 1000
-    sharedPrivateLinkResource: isPrivateLinkOrigin ? privateLinkOriginDetails : null
+    sharedPrivateLinkResource: isPrivateLinkOrigins[i] ? privateLinkOriginDetails[i] : null
   }
-}
+}]
 
 resource route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
   name: routeName
   parent: endpoint
   dependsOn: [
-    origin // This explicit dependency is required to ensure that the origin group is not empty when the route is created.
+    origins // This explicit dependency is required to ensure that the origin group is not empty when the route is created.
   ]
   properties: {
     originGroup: {
