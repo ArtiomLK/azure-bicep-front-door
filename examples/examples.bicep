@@ -95,6 +95,6 @@ module fdAPremium '../main.bicep' = {
     originHostNames: [appA.properties.defaultHostName]
     privateEndpointResourceIds: [appA.id, appB.id]
     privateLinkResourceType: ['sites', 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
-    privateEndpointLocations: [location, location]
+    privateEndpointLocations: [location, location_bcdr]
   }
 }
