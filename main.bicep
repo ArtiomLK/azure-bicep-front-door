@@ -10,25 +10,25 @@ param tags object = {}
 @description('The Azure Front Door Name')
 param fd_n string
 
-param routeName string
+param route_n string
 
-param originGroupName string
+param origin_g_n string
 
 @description('The name of the Front Door endpoint to create. This must be globally unique.')
-param endpointName string
+param endpoint_n string
 
 @description('The name of the SKU to use when creating the Front Door profile. If you use Private Link this must be set to `Premium_AzureFrontDoor`.')
 @allowed([
   'Standard_AzureFrontDoor'
   'Premium_AzureFrontDoor'
 ])
-param skuName string
+param sku_n string
 
 @description('The host name that should be used when connecting to the origin.')
-param originHostNames array
+param origin_host_names array
 
 @description('The path that should be used when connecting to the origin.')
-param originPath string = ''
+param origin_path string = ''
 
 @description('The protocol that should be used when connecting from Front Door to the origin.')
 @allowed([
@@ -36,33 +36,33 @@ param originPath string = ''
   'HttpsOnly'
   'MatchRequest'
 ])
-param originForwardingProtocol string = 'HttpsOnly'
+param origin_fw_protocol string = 'HttpsOnly'
 
 @description('The protocol that should be used when checking origin health from Front Door to origins')
 @allowed([
   'Http'
   'Https'
 ])
-param originGroupHealthProbeSettings string
+param origin_gr_health_probe_settings string
 
 @description('If you are using Private Link to connect to the origin, this should specify the resource ID of the Private Link resource (e.g. an App Service application, Azure Storage account, etc). If you are not using Private Link then this should be empty.')
-param privateEndpointResourceIds array
+param pe_res_ids array
 
 @description('If you are using Private Link to connect to the origin, this should specify the resource type of the Private Link resource. The allowed value will depend on the specific Private Link resource type you are using. If you are not using Private Link then this should be empty.')
-param privateLinkResourceType array
+param pl_res_types array
 
 @description('If you are using Private Link to connect to the origin, this should specify the location of the Private Link resource. If you are not using Private Link then this should be empty.')
-param privateEndpointLocations array
+param pe_l array
 
 // When connecting to Private Link origins, we need to assemble the privateLinkOriginDetails object with various pieces of data.
-var isPrivateLinkOrigins = [for privateEndpointResourceId in privateEndpointResourceIds : (privateEndpointResourceId != '') ]
+var isPrivateLinkOrigins = [for privateEndpointResourceId in pe_res_ids : (privateEndpointResourceId != '') ]
 
-var privateLinkOriginDetails = [for i in range(0, length(privateEndpointResourceIds)) : {
+var privateLinkOriginDetails = [for i in range(0, length(pe_res_ids)) : {
   privateLink: {
-    id: privateEndpointResourceIds[i]
+    id: pe_res_ids[i]
   }
-  groupId: (privateLinkResourceType[i] != '') ? privateLinkResourceType[i] : null
-  privateLinkLocation: privateEndpointLocations[i]
+  groupId: (pl_res_types[i] != '') ? pl_res_types[i] : null
+  privateLinkLocation: pe_l[i]
   requestMessage: 'Please approve this connection.'
 }]
 
@@ -71,12 +71,12 @@ resource profile 'Microsoft.Cdn/profiles@2021-06-01' = {
   location: 'global'
   tags: tags
   sku: {
-    name: skuName
+    name: sku_n
   }
 }
 
 resource endpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
-  name: endpointName
+  name: endpoint_n
   parent: profile
   location: 'global'
   tags: tags
@@ -86,7 +86,7 @@ resource endpoint 'Microsoft.Cdn/profiles/afdEndpoints@2021-06-01' = {
 }
 
 resource originGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {
-  name: originGroupName
+  name: origin_g_n
   parent: profile
   properties: {
     loadBalancingSettings: {
@@ -96,20 +96,20 @@ resource originGroup 'Microsoft.Cdn/profiles/originGroups@2021-06-01' = {
     healthProbeSettings: {
       probePath: '/'
       probeRequestType: 'HEAD'
-      probeProtocol: originGroupHealthProbeSettings
+      probeProtocol: origin_gr_health_probe_settings
       probeIntervalInSeconds: 100
     }
   }
 }
 
-resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ for i in range(0, length(originHostNames)) : {
-  name: replace(originHostNames[i], '.azurewebsites.net', '')
+resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ for i in range(0, length(origin_host_names)) : {
+  name: replace(origin_host_names[i], '.azurewebsites.net', '')
   parent: originGroup
   properties: {
-    hostName: originHostNames[i]
+    hostName: origin_host_names[i]
     httpPort: 80
     httpsPort: 443
-    originHostHeader: originHostNames[i]
+    originHostHeader: origin_host_names[i]
     priority: 1
     weight: 1000
     sharedPrivateLinkResource: isPrivateLinkOrigins[i] ? privateLinkOriginDetails[i] : null
@@ -117,7 +117,7 @@ resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ fo
 }]
 
 resource route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
-  name: routeName
+  name: route_n
   parent: endpoint
   dependsOn: [
     origins // This explicit dependency is required to ensure that the origin group is not empty when the route is created.
@@ -126,7 +126,7 @@ resource route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
     originGroup: {
       id: originGroup.id
     }
-    originPath: originPath != '' ? originPath : null
+    origin_path: origin_path != '' ? origin_path : null
     supportedProtocols: [
       'Http'
       'Https'
@@ -137,7 +137,7 @@ resource route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
     cacheConfiguration: {
       queryStringCachingBehavior: 'IgnoreQueryString'
     }
-    forwardingProtocol: originForwardingProtocol
+    forwardingProtocol: origin_fw_protocol
     linkToDefaultDomain: 'Enabled'
     httpsRedirect: 'Enabled'
   }

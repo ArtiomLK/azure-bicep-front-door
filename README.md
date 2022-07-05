@@ -10,6 +10,7 @@
 | ---------------------------- | ------------------------------------------------------------- | ----------------- | ------------------------------------ |
 | tags                         | Az Resources tags                                             | object            | `{ key: value }`                     |
 | fd_n                         | Front Door Name                                               | string [required] |                                      |
+| routeName                    | Front Door Route Name                                         | string [required] |                                      |
 | fd_backend_pool_n            | Front Door BackendPool names                                  | string [required] | `backend-pool-app`                   |
 | fd_backend_pool_backend_addr | Front Door BackendPool Backends. Must be IPs address or FQDNs | string [required] | `app-service-name.azurewebsites.net` |
 
