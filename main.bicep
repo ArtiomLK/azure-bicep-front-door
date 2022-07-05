@@ -53,7 +53,7 @@ var privateLinkOriginDetails = [for i in range(0, length(privateEndpointResource
   privateLink: {
     id: privateEndpointResourceIds[i]
   }
-  groupId: (privateLinkResourceType != '') ? privateLinkResourceType : null
+  groupId: (privateLinkResourceType[i] != '') ? privateLinkResourceType[i] : null
   privateLinkLocation: privateEndpointLocations[i]
   requestMessage: 'Please approve this connection.'
 }]
