@@ -47,6 +47,15 @@ resource appA 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
+resource appB 'Microsoft.Web/sites@2018-11-01' = {
+  name: take('appB-${guid(subscription().id, resourceGroup().id, tags.env)}', 60)
+  location: location
+  tags: tags
+  properties: {
+    serverFarmId: appServicePlan.id
+  }
+}
+
 resource appServicePlanBCDR 'Microsoft.Web/serverfarms@2021-03-01' = {
   tags: tags
   name: 'plan-bcdr-azure-bicep-app-service-test'
@@ -61,8 +70,8 @@ resource appServicePlanBCDR 'Microsoft.Web/serverfarms@2021-03-01' = {
   }
 }
 
-resource appB 'Microsoft.Web/sites@2018-11-01' = {
-  name: take('appB-${guid(subscription().id, resourceGroup().id, tags.env)}', 60)
+resource appC 'Microsoft.Web/sites@2018-11-01' = {
+  name: take('appC-${guid(subscription().id, resourceGroup().id, tags.env)}', 60)
   location: location_bcdr
   tags: tags
   properties: {
@@ -70,16 +79,18 @@ resource appB 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-// ------------------------------------------------------------------------------------------------
-// Front Door Deployment Examples
-// ------------------------------------------------------------------------------------------------
-
-module fda '../main.bicep' = {
-  name: 'fda'
+module fdAPremium '../main.bicep' = {
+  name: 'fd-a-premium'
   params: {
-    tags: tags
-    fd_n: 'fda-${guid(subscription().id, resourceGroup().id, tags.env)}'
-    fd_backend_pool_n: 'backend-pool-app'
-    fd_backend_pool_backend_addr: '${appA.name}.azurewebsites.net,${appB.name}.azurewebsites.net'
+    fd_n: 'fd-a-premium'
+    sku_n: 'Premium_AzureFrontDoor'
+    endpoint_n: take('fd-a-premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    route_n: 'myapp-prod-route'
+    origin_g_n: 'myapp-prod-origin-group'
+    origin_gr_health_probe_settings: 'Https'
+    origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
+    pe_res_ids: [appA.id, '', appC.id]
+    pl_res_types: ['sites', '', 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
+    pe_l: [location, location, location_bcdr]
   }
 }

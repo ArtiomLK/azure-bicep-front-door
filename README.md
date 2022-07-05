@@ -6,12 +6,21 @@
 
 ### Parameter Values
 
-| Name                         | Description                                                   | Value             | Examples                             |
-| ---------------------------- | ------------------------------------------------------------- | ----------------- | ------------------------------------ |
-| tags                         | Az Resources tags                                             | object            | `{ key: value }`                     |
-| fd_n                         | Front Door Name                                               | string [required] |                                      |
-| fd_backend_pool_n            | Front Door BackendPool names                                  | string [required] | `backend-pool-app`                   |
-| fd_backend_pool_backend_addr | Front Door BackendPool Backends. Must be IPs address or FQDNs | string [required] | `app-service-name.azurewebsites.net` |
+| Name                            | Description                                                                                                                                             | Value             | Examples                                                                                  |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ----------------------------------------------------------------------------------------- |
+| tags                            | Az Resources tags                                                                                                                                       | object            | `{ key: value }`                                                                          |
+| fd_n                            | Front Door Name                                                                                                                                         | string [required] |                                                                                           |
+| route_n                         | Front Door Route Name                                                                                                                                   | string [required] |                                                                                           |
+| origin_g_n                      | Front Door Origin Group Name                                                                                                                            | string [required] |                                                                                           |
+| endpoint_n                      | Front Door Endpoint Name                                                                                                                                | string [required] |                                                                                           |
+| sku_n                           | Front Door SKU                                                                                                                                          | string [required] | `Standard_AzureFrontDoor`            \| `Premium_AzureFrontDoor`                          |
+| origin_host_names               | The host name that should be used when connecting to the origin                                                                                         | string [required] |                                                                                           |
+| origin_path                     | The path that should be used when connecting to the origin                                                                                              |                   |                                                                                           |
+| origin_fw_protocol              | The protocol that should be used when connecting from Front Door to the origin                                                                          |                   |                                                                                           |
+| origin_gr_health_probe_settings | The protocol that should be used when checking origin health from Front Door to origins                                                                 |                   |                                                                                           |
+| pe_res_ids                      | If using Private Link to connect to the origin, this should specify the resource ID of the Private Link resource. Otherwise, this should be empty       | string [required] | `an App Service res ID, Azure Storage account res ID, etc.`                               |
+| pl_res_types                    | If using Private Link to connect to the origin, this should specify the resource type of the Private Link resource. Otherwise, this should be empty     | string [required] | `The allowed value will depend on the specific Private Link resource type you are using.` |
+| pe_l                            | If you are using Private Link to connect to the origin, this should specify the location of the Private Link resource. Otherwise, this should be empty. | string [required] |                                                                                           |
 
 ### [Reference Examples][1]
 
