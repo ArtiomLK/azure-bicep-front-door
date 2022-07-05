@@ -126,7 +126,7 @@ resource route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
     originGroup: {
       id: originGroup.id
     }
-    origin_path: origin_path != '' ? origin_path : null
+    originPath: origin_path != '' ? origin_path : null
     supportedProtocols: [
       'Http'
       'Https'
