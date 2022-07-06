@@ -53,6 +53,8 @@ az deployment group create \
 - [MS | Docs | Troubleshoot Azure Front Door common issues][9]
 - [MS | Docs | Tuning Web Application Firewall (WAF) for Azure Front Door][3]
 - [MS | Docs | Web Application Firewall DRS (Default Rule Set) rule groups and rules][8]
+- Microsoft Sentinel
+- [MS | Docs | Using Microsoft Sentinel with Azure Web Application Firewall][10]
 
 [1]: ./examples/examples.bicep
 [2]: https://www.youtube.com/watch?v=DHiZbIks9i0&ab_channel=JohnSavill%27sTechnicalTraining
@@ -63,3 +65,4 @@ az deployment group create \
 [7]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-drs
 [8]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-tuning
 [9]: https://docs.microsoft.com/en-us/azure/frontdoor/troubleshoot-issues
+[10]: https://docs.microsoft.com/en-us/azure/web-application-firewall/waf-sentinel
