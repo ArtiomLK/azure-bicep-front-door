@@ -51,8 +51,8 @@ az deployment group create \
 - Azure Web Application Firewall (WAF)
 - [MS | Docs | Frequently asked questions for Azure Web Application Firewall on Azure Front Door Service][3]
 - [MS | Docs | Troubleshoot Azure Front Door common issues][9]
-- [MS | Docs | Tuning Web Application Firewall (WAF) for Azure Front Door][3]
-- [MS | Docs | Web Application Firewall DRS (Default Rule Set) rule groups and rules][8]
+- [MS | Docs | Tuning Web Application Firewall (WAF) for Azure Front Door][8]
+- [MS | Docs | Web Application Firewall DRS (Default Rule Set) rule groups and rules][7]
 - Microsoft Sentinel
 - [MS | Docs | Using Microsoft Sentinel with Azure Web Application Firewall][10]
 
