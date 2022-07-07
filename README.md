@@ -49,11 +49,20 @@ az deployment group create \
 - [MS | Docs | Azure Private Link frequently asked questions (FAQ)][5]
 - [MS | Docs | What is Azure Private Link service?][6]
 - Azure Web Application Firewall (WAF)
-- [MS | Docs | Azure Web Application Firewall on Azure Front Door][3]
+- [MS | Docs | Frequently asked questions for Azure Web Application Firewall on Azure Front Door Service][3]
+- [MS | Docs | Troubleshoot Azure Front Door common issues][9]
+- [MS | Docs | Tuning Web Application Firewall (WAF) for Azure Front Door][8]
+- [MS | Docs | Web Application Firewall DRS (Default Rule Set) rule groups and rules][7]
+- Microsoft Sentinel
+- [MS | Docs | Using Microsoft Sentinel with Azure Web Application Firewall][10]
 
 [1]: ./examples/examples.bicep
 [2]: https://www.youtube.com/watch?v=DHiZbIks9i0&ab_channel=JohnSavill%27sTechnicalTraining
-[3]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/afds-overview
+[3]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/waf-faq
 [4]: https://docs.microsoft.com/en-us/azure/frontdoor/private-link
 [5]: https://docs.microsoft.com/en-us/azure/private-link/private-link-faq
 [6]: https://docs.microsoft.com/en-us/azure/private-link/private-link-service-overview
+[7]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-drs
+[8]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-tuning
+[9]: https://docs.microsoft.com/en-us/azure/frontdoor/troubleshoot-issues
+[10]: https://docs.microsoft.com/en-us/azure/web-application-firewall/waf-sentinel
