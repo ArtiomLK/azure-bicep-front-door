@@ -61,7 +61,7 @@ AzureDiagnostics
 | summarize RequestCount = count() by Host = tostring(ParsedUrl.Host), StatusCode = httpStatusCode_s, requestUri_s
 | order by RequestCount desc
 
-// Display Log details filtered by http codes, request uri path, http method, and IP
+// Display Log details filtered by http codes, request uri path, http method and IP
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorAccessLog"
 | where toint(httpStatusCode_s) <= 500
@@ -71,7 +71,7 @@ AzureDiagnostics
 | extend localTimestamp = TimeGenerated - 6h
 | extend ParsedUrl = parseurl(requestUri_s)
 
-// Display server errors filtered by http codes, request uri path, http method, and IP
+// Display server errors filtered by http codes, request uri path, http method and IP
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorAccessLog"
 | where toint(httpStatusCode_s) >= 500
@@ -81,6 +81,16 @@ AzureDiagnostics
 | extend ParsedUrl = parseurl(requestUri_s)
 | extend localTimestamp = TimeGenerated - 6h
 | project localTimestamp, RequestBytes = toint(requestBytes_s), ResponseBytes = toint(responseBytes_s), clientIp_s, httpStatusCode_s, timeToFirstByte_s, ErrorInfo_s, clientCountry_s
+
+// Display Server Error count by IPs filtered by http codes, request uri path, http method and IP
+AzureDiagnostics
+| where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorAccessLog"
+| where toint(httpStatusCode_s) >= 500
+// | where requestUri_s has 'some-path.aspx'
+| where httpMethod_s has 'POST'
+// | where clientIp_s has '###.###.###.###'
+| extend ParsedUrl = parseurl(requestUri_s)
+| summarize RequestCount = count() by clientIp_s, clientCountry_s
 ```
 
 ## Additional Resources
