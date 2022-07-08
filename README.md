@@ -82,7 +82,7 @@ AzureDiagnostics
 | extend localTimestamp = TimeGenerated - 6h
 | project localTimestamp, RequestBytes = toint(requestBytes_s), ResponseBytes = toint(responseBytes_s), clientIp_s, httpStatusCode_s, timeToFirstByte_s, ErrorInfo_s, clientCountry_s
 
-// Display Server Error count by IPs filtered by http codes, request uri path, http method and IP
+// Display server error count by IPs filtered by http codes, request uri path, http method and IP
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.CDN" and Category == "FrontDoorAccessLog"
 | where toint(httpStatusCode_s) >= 500
