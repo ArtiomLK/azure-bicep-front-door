@@ -97,6 +97,8 @@ AzureDiagnostics
 
 - Azure Front Door (FD)
 - [Youtube | John Savill's | Microsoft Azure Front Door Deep Dive][2]
+- Logs
+- [MS | Docs | Azure Front Door logs][11]
 - Azure Front Door with Private Link
 - [MS | Docs | Secure your Origin with Private Link in Azure Front Door Premium][4]
 - [MS | Docs | Azure Private Link frequently asked questions (FAQ)][5]
@@ -119,3 +121,4 @@ AzureDiagnostics
 [8]: https://docs.microsoft.com/en-us/azure/web-application-firewall/afds/waf-front-door-tuning
 [9]: https://docs.microsoft.com/en-us/azure/frontdoor/troubleshoot-issues
 [10]: https://docs.microsoft.com/en-us/azure/web-application-firewall/waf-sentinel
+[11]: https://docs.microsoft.com/en-us/azure/frontdoor/standard-premium/how-to-logs
