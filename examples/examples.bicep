@@ -79,12 +79,12 @@ resource appC 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-module fd_default_standard '../main.bicep' = {
-  name: 'fd_default_standard'
+module fdStandard '../main.bicep' = {
+  name: 'fdStandard'
   params: {
-    fd_n: 'fd_default_standard'
+    fd_n: 'fdStandard'
     sku_n: 'Standard_AzureFrontDoor'
-    endpoint_n: take('fd_default_standard-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    endpoint_n: take('fdStandard-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
     route_n: 'myapp-prod-route'
     origin_g_n: 'myapp-prod-origin-group'
     origin_gr_health_probe_settings: 'Https'
@@ -92,12 +92,12 @@ module fd_default_standard '../main.bicep' = {
   }
 }
 
-module fd_w_pl_premium '../main.bicep' = {
-  name: 'fd_w_pl_premium'
+module fdWPlPremium '../main.bicep' = {
+  name: 'fdWPlPremium'
   params: {
-    fd_n: 'fd_w_pl_premium'
+    fd_n: 'fdWPlPremium'
     sku_n: 'Premium_AzureFrontDoor'
-    endpoint_n: take('fd_w_pl_premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    endpoint_n: take('fdWPlPremium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
     route_n: 'myapp-prod-route'
     origin_g_n: 'myapp-prod-origin-group'
     origin_gr_health_probe_settings: 'Https'
