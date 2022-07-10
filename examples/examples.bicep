@@ -79,12 +79,25 @@ resource appC 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-module fdAPremium '../main.bicep' = {
-  name: 'fd-a-premium'
+module fd_default_standard '../main.bicep' = {
+  name: 'fd_default_standard'
   params: {
-    fd_n: 'fd-a-premium'
+    fd_n: 'fd_default_standard'
+    sku_n: 'Standard_AzureFrontDoor'
+    endpoint_n: take('fd_default_standard-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    route_n: 'myapp-prod-route'
+    origin_g_n: 'myapp-prod-origin-group'
+    origin_gr_health_probe_settings: 'Https'
+    origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
+  }
+}
+
+module fd_w_pl_premium '../main.bicep' = {
+  name: 'fd_w_pl_premium'
+  params: {
+    fd_n: 'fd_w_pl_premium'
     sku_n: 'Premium_AzureFrontDoor'
-    endpoint_n: take('fd-a-premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    endpoint_n: take('fd_w_pl_premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
     route_n: 'myapp-prod-route'
     origin_g_n: 'myapp-prod-origin-group'
     origin_gr_health_probe_settings: 'Https'

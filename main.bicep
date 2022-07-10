@@ -46,13 +46,13 @@ param origin_fw_protocol string = 'HttpsOnly'
 param origin_gr_health_probe_settings string
 
 @description('If you are using Private Link to connect to the origin, this should specify the resource ID of the Private Link resource (e.g. an App Service application, Azure Storage account, etc). If you are not using Private Link then this should be empty.')
-param pe_res_ids array
+param pe_res_ids array = []
 
 @description('If you are using Private Link to connect to the origin, this should specify the resource type of the Private Link resource. The allowed value will depend on the specific Private Link resource type you are using. If you are not using Private Link then this should be empty.')
-param pl_res_types array
+param pl_res_types array = []
 
 @description('If you are using Private Link to connect to the origin, this should specify the location of the Private Link resource. If you are not using Private Link then this should be empty.')
-param pe_l array
+param pe_l array = []
 
 // When connecting to Private Link origins, we need to assemble the privateLinkOriginDetails object with various pieces of data.
 var isPrivateLinkOrigins = [for privateEndpointResourceId in pe_res_ids : (privateEndpointResourceId != '') ]
