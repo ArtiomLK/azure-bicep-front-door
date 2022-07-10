@@ -103,7 +103,7 @@ module fdWPlPremium '../main.bicep' = {
     origin_gr_health_probe_settings: 'Https'
     origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
     pe_res_ids: [appA.id, '', appC.id]
-    pl_res_types: ['sites', '', 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
+    pl_res_types: ['sites', null, 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
     pe_l: [location, location, location_bcdr]
   }
 }
