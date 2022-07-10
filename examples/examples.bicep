@@ -79,18 +79,31 @@ resource appC 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-module fdAPremium '../main.bicep' = {
-  name: 'fd-a-premium'
+module fdStandard '../main.bicep' = {
+  name: 'fdStandard'
   params: {
-    fd_n: 'fd-a-premium'
+    fd_n: 'fdStandard'
+    sku_n: 'Standard_AzureFrontDoor'
+    endpoint_n: take('fdStandard-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    route_n: 'myapp-prod-route'
+    origin_g_n: 'myapp-prod-origin-group'
+    origin_gr_health_probe_settings: 'Https'
+    origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
+  }
+}
+
+module fdWPlPremium '../main.bicep' = {
+  name: 'fdWPlPremium'
+  params: {
+    fd_n: 'fdWPlPremium'
     sku_n: 'Premium_AzureFrontDoor'
-    endpoint_n: take('fd-a-premium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    endpoint_n: take('fdWPlPremium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
     route_n: 'myapp-prod-route'
     origin_g_n: 'myapp-prod-origin-group'
     origin_gr_health_probe_settings: 'Https'
     origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
     pe_res_ids: [appA.id, '', appC.id]
-    pl_res_types: ['sites', '', 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
+    pl_res_types: ['sites', null, 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
     pe_l: [location, location, location_bcdr]
   }
 }
