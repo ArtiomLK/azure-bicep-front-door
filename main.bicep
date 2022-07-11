@@ -54,15 +54,12 @@ param pl_res_types array = []
 @description('If you are using Private Link to connect to the origin, this should specify the location of the Private Link resource. If you are not using Private Link then this should be empty.')
 param pe_l array = []
 
-// When connecting to Private Link origins, we need to assemble the privateLinkOriginDetails object with various pieces of data.
-var isPrivateLinkOrigins = [for privateEndpointResourceId in pe_res_ids : (privateEndpointResourceId != '') ]
-
 var privateLinkOriginDetails = [for i in range(0, length(pe_res_ids)) : {
   privateLink: {
-    id: pe_res_ids[i]
+    id: (pe_res_ids[i] != '') ? pe_res_ids[i] : null
   }
   groupId: (pl_res_types[i] != '') ? pl_res_types[i] : null
-  privateLinkLocation: pe_l[i]
+  privateLinkLocation: (pe_l[i] != '') ? pe_l[i] : null
   requestMessage: 'Please approve this connection.'
 }]
 
@@ -112,7 +109,7 @@ resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ fo
     originHostHeader: origin_host_names[i]
     priority: 1
     weight: 1000
-    sharedPrivateLinkResource: empty(pe_res_ids) ? null : isPrivateLinkOrigins[i] ? privateLinkOriginDetails[i] : null
+    sharedPrivateLinkResource: empty(pe_res_ids) ? null : pe_res_ids[i] != '' ? privateLinkOriginDetails[i] : null
   }
 }]
 
