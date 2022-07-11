@@ -103,7 +103,23 @@ module fdWPlPremium '../main.bicep' = {
     origin_gr_health_probe_settings: 'Https'
     origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
     pe_res_ids: [appA.id, '', appC.id]
+    pl_res_types: ['sites', '', 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
+    pe_l: [location, '', location_bcdr]
+  }
+}
+
+module fdWPlPremiumInputValidation '../main.bicep' = {
+  name: 'fdWPlPremiumInputValidation'
+  params: {
+    fd_n: 'fdWPlPremium'
+    sku_n: 'Premium_AzureFrontDoor'
+    endpoint_n: take('fdWPlPremium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    route_n: 'myapp-prod-route'
+    origin_g_n: 'myapp-prod-origin-group'
+    origin_gr_health_probe_settings: 'Https'
+    origin_host_names: [appA.properties.defaultHostName, appB.properties.defaultHostName, appC.properties.defaultHostName]
+    pe_res_ids: [appA.id, null, appC.id]
     pl_res_types: ['sites', null, 'sites'] // For App Service and Azure Functions, this needs to be 'sites'.
-    pe_l: [location, location, location_bcdr]
+    pe_l: [location, null, location_bcdr]
   }
 }
