@@ -109,7 +109,7 @@ resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ fo
     originHostHeader: origin_host_names[i]
     priority: 1
     weight: 1000
-    sharedPrivateLinkResource: empty(pe_res_ids) ? null : pe_res_ids[i] != '' ? privateLinkOriginDetails[i] : null
+    sharedPrivateLinkResource: empty(pe_res_ids) ? null : pe_res_ids[i] != '' || pe_res_ids[i] != null  ? privateLinkOriginDetails[i] : null
   }
 }]
 
