@@ -56,10 +56,10 @@ param pe_l array = []
 
 var privateLinkOriginDetails = [for i in range(0, length(pe_res_ids)) : {
   privateLink: {
-    id: (pe_res_ids[i] != '') ? pe_res_ids[i] : null
+    id: (pe_res_ids[i] == '' || pe_res_ids[i] == null) ? null : pe_res_ids[i]
   }
-  groupId: (pl_res_types[i] != '') ? pl_res_types[i] : null
-  privateLinkLocation: (pe_l[i] != '') ? pe_l[i] : null
+  groupId: (pl_res_types[i] == '' || pl_res_types[i] == null) ? null : pl_res_types[i]
+  privateLinkLocation: (pe_l[i] == '' || pe_l[i] == null) ? null : pe_l[i]
   requestMessage: 'Please approve this connection.'
 }]
 
@@ -109,7 +109,7 @@ resource origins 'Microsoft.Cdn/profiles/originGroups/origins@2021-06-01' = [ fo
     originHostHeader: origin_host_names[i]
     priority: 1
     weight: 1000
-    sharedPrivateLinkResource: empty(pe_res_ids) ? null : pe_res_ids[i] != '' || pe_res_ids[i] != null  ? privateLinkOriginDetails[i] : null
+    sharedPrivateLinkResource: empty(pe_res_ids) ? null : (pe_res_ids[i] == '' || pe_res_ids[i] == null)  ? null : privateLinkOriginDetails[i]
   }
 }]
 
