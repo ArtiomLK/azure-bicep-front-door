@@ -113,7 +113,7 @@ module fdWPlPremiumInputValidation '../main.bicep' = {
   params: {
     fd_n: 'fdWPlPremiumInputValidation'
     sku_n: 'Premium_AzureFrontDoor'
-    endpoint_n: take('fdWPlPremium-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
+    endpoint_n: take('fdWPlPremiumInputValidation-${guid(subscription().id, resourceGroup().id, tags.env)}', 46)
     route_n: 'myapp-prod-route'
     origin_g_n: 'myapp-prod-origin-group'
     origin_gr_health_probe_settings: 'Https'
